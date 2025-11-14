@@ -1,494 +1,193 @@
-<html>
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
-<meta name=Generator content="Microsoft Word 15 (filtered)">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>TXT â†’ CSV Converter (Web)</title>
 <style>
-<!--
- /* Font Definitions */
- @font-face
-	{font-family:"Cambria Math";
-	panose-1:2 4 5 3 5 4 6 3 2 4;}
-@font-face
-	{font-family:Aptos;}
- /* Style Definitions */
- p.MsoNormal, li.MsoNormal, div.MsoNormal
-	{margin-top:0cm;
-	margin-right:0cm;
-	margin-bottom:8.0pt;
-	margin-left:0cm;
-	line-height:115%;
-	font-size:12.0pt;
-	font-family:"Aptos",sans-serif;}
-.MsoChpDefault
-	{font-size:10.0pt;
-	font-family:"Aptos",sans-serif;}
-@page WordSection1
-	{size:595.3pt 841.9pt;
-	margin:70.85pt 70.85pt 70.85pt 70.85pt;}
-div.WordSection1
-	{page:WordSection1;}
--->
+  :root { --bg:#0f172a; --panel:#111827; --muted:#94a3b8; --text:#e5e7eb; --accent:#22c55e; }
+  html,body { margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial; background:var(--bg); color:var(--text); }
+  .container { max-width: 1000px; margin: 24px auto; padding: 0 16px; }
+  .header { display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; flex-wrap:wrap; }
+  h1 { font-size:20px; margin:0; }
+  .tabs { display:flex; gap:8px; margin: 16px 0; flex-wrap: wrap; }
+  .tab-btn { background:#1f2937; color:#e5e7eb; border:1px solid #334155; padding:8px 12px; border-radius:10px; cursor:pointer; }
+  .tab-btn.active { background:#0b1324; border-color:#475569; box-shadow: inset 0 0 0 1px #475569; }
+  .card { background:var(--panel); border:1px solid #1f2937; border-radius:14px; padding:16px; }
+  .grid { display:grid; gap:16px; }
+  .grid-2 { grid-template-columns: 1fr 1fr; }
+  .row { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+  input[type="file"], input[type="text"], textarea { width:100%; background:#0b1020; color:#e5e7eb; border:1px solid #334155; border-radius:10px; padding:10px; }
+  textarea { min-height: 260px; resize: vertical; line-height:1.4; }
+  .btn { background:#0b1324; color:#e5e7eb; border:1px solid #334155; padding:10px 14px; border-radius:10px; cursor:pointer; }
+  .btn:hover { border-color:#64748b; }
+  .btn-primary { border-color:#15803d; color:#d1fae5; }
+  .btn-primary:hover { box-shadow: 0 0 0 2px rgba(34,197,94,.2) inset; }
+  .hint { color:var(--muted); font-size: 12px; }
+  .footer { margin-top:16px; text-align:center; color:#9ca3af; font-size:12px; }
+  .hidden { display:none; }
+  .badge { font-size:11px; color:#a5b4fc; }
 </style>
-
 </head>
-
-<body lang=EN-GB style='word-wrap:break-word'>
-
-<div class=WordSection1>
-
-<p class=MsoNormal>&lt;!DOCTYPE html&gt;</p>
-
-<p class=MsoNormal>&lt;html lang=&quot;en&quot;&gt;</p>
-
-<p class=MsoNormal>&lt;head&gt;</p>
-
-<p class=MsoNormal>&lt;meta charset=&quot;utf-8&quot; /&gt;</p>
-
-<p class=MsoNormal>&lt;meta name=&quot;viewport&quot;
-content=&quot;width=device-width,initial-scale=1&quot; /&gt;</p>
-
-<p class=MsoNormal>&lt;title&gt;TXT &#8594; CSV Converter (Web)&lt;/title&gt;</p>
-
-<p class=MsoNormal>&lt;style&gt;</p>
-
-<p class=MsoNormal>  :root { --bg:#0f172a; --panel:#111827; --muted:#94a3b8; --text:#e5e7eb;
---accent:#22c55e; }</p>
-
-<p class=MsoNormal>  html,body { margin:0; font-family: ui-sans-serif,
-system-ui, -apple-system, Segoe UI, Roboto, Arial; background:var(--bg);
-color:var(--text); }</p>
-
-<p class=MsoNormal>  .container { max-width: 1000px; margin: 24px auto;
-padding: 0 16px; }</p>
-
-<p class=MsoNormal>  .header { display:flex; align-items:center;
-justify-content:space-between; margin-bottom:16px; flex-wrap:wrap; }</p>
-
-<p class=MsoNormal>  h1 { font-size:20px; margin:0; }</p>
-
-<p class=MsoNormal>  .tabs { display:flex; gap:8px; margin: 16px 0; flex-wrap:
-wrap; }</p>
-
-<p class=MsoNormal>  .tab-btn { background:#1f2937; color:#e5e7eb; border:1px
-solid #334155; padding:8px 12px; border-radius:10px; cursor:pointer; }</p>
-
-<p class=MsoNormal>  .tab-btn.active { background:#0b1324;
-border-color:#475569; box-shadow: inset 0 0 0 1px #475569; }</p>
-
-<p class=MsoNormal>  .card { background:var(--panel); border:1px solid #1f2937;
-border-radius:14px; padding:16px; }</p>
-
-<p class=MsoNormal>  .grid { display:grid; gap:16px; }</p>
-
-<p class=MsoNormal>  .grid-2 { grid-template-columns: 1fr 1fr; }</p>
-
-<p class=MsoNormal>  .row { display:flex; gap:8px; align-items:center;
-flex-wrap:wrap; }</p>
-
-<p class=MsoNormal>  input[type=&quot;file&quot;],
-input[type=&quot;text&quot;], textarea { width:100%; background:#0b1020;
-color:#e5e7eb; border:1px solid #334155; border-radius:10px; padding:10px; }</p>
-
-<p class=MsoNormal>  textarea { min-height: 260px; resize: vertical;
-line-height:1.4; }</p>
-
-<p class=MsoNormal>  .btn { background:#0b1324; color:#e5e7eb; border:1px solid
-#334155; padding:10px 14px; border-radius:10px; cursor:pointer; }</p>
-
-<p class=MsoNormal>  .btn:hover { border-color:#64748b; }</p>
-
-<p class=MsoNormal>  .btn-primary { border-color:#15803d; color:#d1fae5; }</p>
-
-<p class=MsoNormal>  .btn-primary:hover { box-shadow: 0 0 0 2px
-rgba(34,197,94,.2) inset; }</p>
-
-<p class=MsoNormal>  .hint { color:var(--muted); font-size: 12px; }</p>
-
-<p class=MsoNormal>  .footer { margin-top:16px; text-align:center;
-color:#9ca3af; font-size:12px; }</p>
-
-<p class=MsoNormal>  .hidden { display:none; }</p>
-
-<p class=MsoNormal>  .badge { font-size:11px; color:#a5b4fc; }</p>
-
-<p class=MsoNormal>&lt;/style&gt;</p>
-
-<p class=MsoNormal>&lt;/head&gt;</p>
-
-<p class=MsoNormal>&lt;body&gt;</p>
-
-<p class=MsoNormal>&lt;div class=&quot;container&quot;&gt;</p>
-
-<p class=MsoNormal>  &lt;div class=&quot;header&quot;&gt;</p>
-
-<p class=MsoNormal>    &lt;h1&gt;TXT &#8594; CSV Converter (Web)&lt;/h1&gt;</p>
-
-<p class=MsoNormal>    &lt;span class=&quot;badge&quot;&gt;Runs entirely in
-your browser • Privacy-friendly&lt;/span&gt;</p>
-
-<p class=MsoNormal>  &lt;/div&gt;</p>
-
-<p class=MsoNormal>&nbsp;</p>
-
-<p class=MsoNormal>  &lt;div class=&quot;tabs&quot;&gt;</p>
-
-<p class=MsoNormal>    &lt;button class=&quot;tab-btn active&quot;
-data-tab=&quot;prompts&quot;&gt;Prompts&lt;/button&gt;</p>
-
-<p class=MsoNormal>    &lt;button class=&quot;tab-btn&quot;
-data-tab=&quot;paste&quot;&gt;Paste text&lt;/button&gt;</p>
-
-<p class=MsoNormal>    &lt;button class=&quot;tab-btn&quot;
-data-tab=&quot;file&quot;&gt;From a .txt file&lt;/button&gt;</p>
-
-<p class=MsoNormal>  &lt;/div&gt;</p>
-
-<p class=MsoNormal>&nbsp;</p>
-
-<p class=MsoNormal>  &lt;!-- Prompts --&gt;</p>
-
-<p class=MsoNormal>  &lt;section id=&quot;tab-prompts&quot;
-class=&quot;card&quot;&gt;</p>
-
-<p class=MsoNormal>    &lt;div class=&quot;grid grid-2&quot;&gt;</p>
-
-<p class=MsoNormal>      &lt;div&gt;</p>
-
-<p class=MsoNormal>        &lt;label for=&quot;prompt1&quot;&gt;Prompt
-1&lt;/label&gt;</p>
-
-<p class=MsoNormal>        &lt;textarea id=&quot;prompt1&quot;
-placeholder=&quot;(Optional) Automatically loaded from prompt1.txt if
-present&quot;&gt;&lt;/textarea&gt;</p>
-
-<p class=MsoNormal>        &lt;div class=&quot;row&quot;
-style=&quot;margin-top:8px;&quot;&gt;</p>
-
-<p class=MsoNormal>          &lt;button class=&quot;btn&quot;
-id=&quot;copy1&quot;&gt;Copy Prompt 1&lt;/button&gt;</p>
-
-<p class=MsoNormal>        &lt;/div&gt;</p>
-
-<p class=MsoNormal>      &lt;/div&gt;</p>
-
-<p class=MsoNormal>      &lt;div&gt;</p>
-
-<p class=MsoNormal>        &lt;label for=&quot;prompt2&quot;&gt;Prompt
-2&lt;/label&gt;</p>
-
-<p class=MsoNormal>        &lt;textarea id=&quot;prompt2&quot;
-placeholder=&quot;(Optional) Automatically loaded from prompt2.txt if
-present&quot;&gt;&lt;/textarea&gt;</p>
-
-<p class=MsoNormal>        &lt;div class=&quot;row&quot;
-style=&quot;margin-top:8px;&quot;&gt;</p>
-
-<p class=MsoNormal>          &lt;button class=&quot;btn&quot; id=&quot;copy2&quot;&gt;Copy
-Prompt 2&lt;/button&gt;</p>
-
-<p class=MsoNormal>        &lt;/div&gt;</p>
-
-<p class=MsoNormal>      &lt;/div&gt;</p>
-
-<p class=MsoNormal>    &lt;/div&gt;</p>
-
-<p class=MsoNormal>    &lt;p class=&quot;hint&quot;
-style=&quot;margin-top:10px;&quot;&gt;</p>
-
-<p class=MsoNormal>      Tip: place &lt;code&gt;prompt1.txt&lt;/code&gt; and
-&lt;code&gt;prompt2.txt&lt;/code&gt; next to this HTML file to load them
-automatically.</p>
-
-<p class=MsoNormal>    &lt;/p&gt;</p>
-
-<p class=MsoNormal>  &lt;/section&gt;</p>
-
-<p class=MsoNormal>&nbsp;</p>
-
-<p class=MsoNormal>  &lt;!-- Paste text --&gt;</p>
-
-<p class=MsoNormal>  &lt;section id=&quot;tab-paste&quot; class=&quot;card
-hidden&quot;&gt;</p>
-
-<p class=MsoNormal>    &lt;label for=&quot;pasteArea&quot;&gt;Paste the content
-of your .txt file here:&lt;/label&gt;</p>
-
-<p class=MsoNormal>    &lt;textarea id=&quot;pasteArea&quot;
-placeholder=&quot;Paste your plain text here…&quot;&gt;&lt;/textarea&gt;</p>
-
-<p class=MsoNormal>    &lt;div class=&quot;row&quot;
-style=&quot;margin-top:8px;&quot;&gt;</p>
-
-<p class=MsoNormal>      &lt;input type=&quot;text&quot; id=&quot;csvName&quot;
-placeholder=&quot;Output file name (e.g. result.csv)&quot; /&gt;</p>
-
-<p class=MsoNormal>      &lt;button class=&quot;btn btn-primary&quot;
-id=&quot;convertPasteBtn&quot;&gt;Convert &amp; Download&lt;/button&gt;</p>
-
-<p class=MsoNormal>    &lt;/div&gt;</p>
-
-<p class=MsoNormal>  &lt;/section&gt;</p>
-
-<p class=MsoNormal>&nbsp;</p>
-
-<p class=MsoNormal>  &lt;!-- From file --&gt;</p>
-
-<p class=MsoNormal>  &lt;section id=&quot;tab-file&quot; class=&quot;card
-hidden&quot;&gt;</p>
-
-<p class=MsoNormal>    &lt;div class=&quot;row&quot;&gt;</p>
-
-<p class=MsoNormal>      &lt;input type=&quot;file&quot;
-id=&quot;fileInput&quot; accept=&quot;.txt,text/plain&quot; /&gt;</p>
-
-<p class=MsoNormal>      &lt;button class=&quot;btn btn-primary&quot;
-id=&quot;convertFileBtn&quot;&gt;Convert to CSV&lt;/button&gt;</p>
-
-<p class=MsoNormal>    &lt;/div&gt;</p>
-
-<p class=MsoNormal>    &lt;p class=&quot;hint&quot;&gt;The downloaded CSV will
-keep the same name as your .txt file, with a &lt;code&gt;.csv&lt;/code&gt;
-extension.&lt;/p&gt;</p>
-
-<p class=MsoNormal>  &lt;/section&gt;</p>
-
-<p class=MsoNormal>&nbsp;</p>
-
-<p class=MsoNormal>  &lt;div class=&quot;footer&quot;&gt;Developed by Julien
-FIOT © 2025&lt;/div&gt;</p>
-
-<p class=MsoNormal>&lt;/div&gt;</p>
-
-<p class=MsoNormal>&nbsp;</p>
-
-<p class=MsoNormal>&lt;script&gt;</p>
-
-<p class=MsoNormal>/* ---------- Tabs ---------- */</p>
-
-<p class=MsoNormal>const tabs = document.querySelectorAll('.tab-btn');</p>
-
-<p class=MsoNormal>const sections = {</p>
-
-<p class=MsoNormal>  prompts: document.getElementById('tab-prompts'),</p>
-
-<p class=MsoNormal>  paste: document.getElementById('tab-paste'),</p>
-
-<p class=MsoNormal>  file: document.getElementById('tab-file'),</p>
-
-<p class=MsoNormal>};</p>
-
-<p class=MsoNormal>tabs.forEach(btn=&gt;{</p>
-
-<p class=MsoNormal>  btn.addEventListener('click', ()=&gt;{</p>
-
-<p class=MsoNormal>    tabs.forEach(b=&gt;b.classList.remove('active'));</p>
-
-<p class=MsoNormal>    btn.classList.add('active');</p>
-
-<p class=MsoNormal>    const key = btn.dataset.tab;</p>
-
-<p class=MsoNormal>   
-Object.values(sections).forEach(s=&gt;s.classList.add('hidden'));</p>
-
-<p class=MsoNormal>    sections[key].classList.remove('hidden');</p>
-
-<p class=MsoNormal>  });</p>
-
-<p class=MsoNormal>});</p>
-
-<p class=MsoNormal>&nbsp;</p>
-
-<p class=MsoNormal>/* ---------- Conversion helpers ---------- */</p>
-
-<p class=MsoNormal>function detectDelimiter(sample) {</p>
-
-<p class=MsoNormal>  if (sample.includes('\t')) return '\t';</p>
-
-<p class=MsoNormal>  if (sample.includes(';')) return ';';</p>
-
-<p class=MsoNormal>  if (sample.includes(',')) return ',';</p>
-
-<p class=MsoNormal>  return null;</p>
-
-<p class=MsoNormal>}</p>
-
-<p class=MsoNormal>function splitLine(line, delimiter) {</p>
-
-<p class=MsoNormal>  const trimmed = line.replace(/\r?\n$/, '').trim();</p>
-
-<p class=MsoNormal>  if (!trimmed) return [];</p>
-
-<p class=MsoNormal>  if (delimiter) return trimmed.split(delimiter);</p>
-
-<p class=MsoNormal>  return trimmed.split(/\s+/);</p>
-
-<p class=MsoNormal>}</p>
-
-<p class=MsoNormal>function toCsvRow(cells) {</p>
-
-<p class=MsoNormal>  return cells.map(c=&gt;{</p>
-
-<p class=MsoNormal>    const s = String(c ?? '');</p>
-
-<p class=MsoNormal>    if (/[&quot;,\n]/.test(s)) return '&quot;' +
-s.replace(/&quot;/g,'&quot;&quot;') + '&quot;';</p>
-
-<p class=MsoNormal>    return s;</p>
-
-<p class=MsoNormal>  }).join(',');</p>
-
-<p class=MsoNormal>}</p>
-
-<p class=MsoNormal>function txtToCsv(text) {</p>
-
-<p class=MsoNormal>  const lines = text.split(/\r?\n/);</p>
-
-<p class=MsoNormal>  const sample = lines.slice(0,5).join('\n');</p>
-
-<p class=MsoNormal>  const delim = detectDelimiter(sample);</p>
-
-<p class=MsoNormal>  const out = [];</p>
-
-<p class=MsoNormal>  for (const raw of lines) {</p>
-
-<p class=MsoNormal>    if (!raw.trim()) { out.push(''); continue; }</p>
-
-<p class=MsoNormal>    out.push(toCsvRow(splitLine(raw, delim)));</p>
-
-<p class=MsoNormal>  }</p>
-
-<p class=MsoNormal>  return out.join('\n');</p>
-
-<p class=MsoNormal>}</p>
-
-<p class=MsoNormal>function downloadCsv(csvText, filename) {</p>
-
-<p class=MsoNormal>  const blob = new Blob([csvText], { type:
-'text/csv;charset=utf-8' });</p>
-
-<p class=MsoNormal>  const url = URL.createObjectURL(blob);</p>
-
-<p class=MsoNormal>  const a = document.createElement('a');</p>
-
-<p class=MsoNormal>  a.href = url;</p>
-
-<p class=MsoNormal>  a.download = filename || 'output.csv';</p>
-
-<p class=MsoNormal>  document.body.appendChild(a);</p>
-
-<p class=MsoNormal>  a.click();</p>
-
-<p class=MsoNormal>  URL.revokeObjectURL(url);</p>
-
-<p class=MsoNormal>  a.remove();</p>
-
-<p class=MsoNormal>}</p>
-
-<p class=MsoNormal>&nbsp;</p>
-
-<p class=MsoNormal>/* ---------- Prompts (copy + optional auto-load) ----------
-*/</p>
-
-<p class=MsoNormal>const prompt1 = document.getElementById('prompt1');</p>
-
-<p class=MsoNormal>const prompt2 = document.getElementById('prompt2');</p>
-
-<p class=MsoNormal>document.getElementById('copy1').addEventListener('click',
-async ()=&gt;{</p>
-
-<p class=MsoNormal>  try { await navigator.clipboard.writeText(prompt1.value);
-alert('Prompt 1 copied.'); }</p>
-
-<p class=MsoNormal>  catch(e){ prompt1.select(); document.execCommand('copy');
-alert('Prompt 1 copied (fallback).'); }</p>
-
-<p class=MsoNormal>});</p>
-
-<p class=MsoNormal>document.getElementById('copy2').addEventListener('click',
-async ()=&gt;{</p>
-
-<p class=MsoNormal>  try { await navigator.clipboard.writeText(prompt2.value);
-alert('Prompt 2 copied.'); }</p>
-
-<p class=MsoNormal>  catch(e){ prompt2.select(); document.execCommand('copy');
-alert('Prompt 2 copied (fallback).'); }</p>
-
-<p class=MsoNormal>});</p>
-
-<p class=MsoNormal>async function tryFetchText(name, targetTextarea) {</p>
-
-<p class=MsoNormal>  try {</p>
-
-<p class=MsoNormal>    const res = await fetch(name, { cache: 'no-store' });</p>
-
-<p class=MsoNormal>    if (!res.ok) return;</p>
-
-<p class=MsoNormal>    targetTextarea.value = await res.text();</p>
-
-<p class=MsoNormal>  } catch(_) {}</p>
-
-<p class=MsoNormal>}</p>
-
-<p class=MsoNormal>tryFetchText('prompt1.txt', prompt1);</p>
-
-<p class=MsoNormal>tryFetchText('prompt2.txt', prompt2);</p>
-
-<p class=MsoNormal>&nbsp;</p>
-
-<p class=MsoNormal>/* ---------- File &#8594; CSV ---------- */</p>
-
-<p class=MsoNormal>document.getElementById('convertFileBtn').addEventListener('click',
-async ()=&gt;{</p>
-
-<p class=MsoNormal>  const fi = document.getElementById('fileInput');</p>
-
-<p class=MsoNormal>  if (!fi.files || !fi.files[0]) { alert('Please choose a
-.txt file.'); return; }</p>
-
-<p class=MsoNormal>  const file = fi.files[0];</p>
-
-<p class=MsoNormal>  const text = await file.text();</p>
-
-<p class=MsoNormal>  const csv = txtToCsv(text);</p>
-
-<p class=MsoNormal>  const base = file.name.replace(/\.[^.]+$/,'') || 'output';</p>
-
-<p class=MsoNormal>  downloadCsv(csv, base + '.csv');</p>
-
-<p class=MsoNormal>});</p>
-
-<p class=MsoNormal>&nbsp;</p>
-
-<p class=MsoNormal>/* ---------- Paste &#8594; CSV ---------- */</p>
-
-<p class=MsoNormal>document.getElementById('convertPasteBtn').addEventListener('click',
-()=&gt;{</p>
-
-<p class=MsoNormal>  const text = document.getElementById('pasteArea').value ||
-'';</p>
-
-<p class=MsoNormal>  if (!text.trim()) { alert('Please paste some text.');
-return; }</p>
-
-<p class=MsoNormal>  const csv = txtToCsv(text);</p>
-
-<p class=MsoNormal>  const name =
-document.getElementById('csvName').value.trim() || 'output.csv';</p>
-
-<p class=MsoNormal>  downloadCsv(csv, name.endsWith('.csv') ? name : name +
-'.csv');</p>
-
-<p class=MsoNormal>});</p>
-
-<p class=MsoNormal>&lt;/script&gt;</p>
-
-<p class=MsoNormal>&lt;/body&gt;</p>
-
-<p class=MsoNormal>&lt;/html&gt;</p>
-
+<body>
+<div class="container">
+  <div class="header">
+    <h1>TXT â†’ CSV Converter (Web)</h1>
+    <span class="badge">Runs entirely in your browser â€¢ Privacy-friendly</span>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="prompts">Prompts</button>
+    <button class="tab-btn" data-tab="paste">Paste text</button>
+    <button class="tab-btn" data-tab="file">From a .txt file</button>
+  </div>
+
+  <!-- Prompts -->
+  <section id="tab-prompts" class="card">
+    <div class="grid grid-2">
+      <div>
+        <label for="prompt1">Prompt 1</label>
+        <textarea id="prompt1" placeholder="(Optional) Automatically loaded from prompt1.txt if present"></textarea>
+        <div class="row" style="margin-top:8px;">
+          <button class="btn" id="copy1">Copy Prompt 1</button>
+        </div>
+      </div>
+      <div>
+        <label for="prompt2">Prompt 2</label>
+        <textarea id="prompt2" placeholder="(Optional) Automatically loaded from prompt2.txt if present"></textarea>
+        <div class="row" style="margin-top:8px;">
+          <button class="btn" id="copy2">Copy Prompt 2</button>
+        </div>
+      </div>
+    </div>
+    <p class="hint" style="margin-top:10px;">
+      Tip: place <code>prompt1.txt</code> and <code>prompt2.txt</code> next to this HTML file to load them automatically.
+    </p>
+  </section>
+
+  <!-- Paste text -->
+  <section id="tab-paste" class="card hidden">
+    <label for="pasteArea">Paste the content of your .txt file here:</label>
+    <textarea id="pasteArea" placeholder="Paste your plain text hereâ€¦"></textarea>
+    <div class="row" style="margin-top:8px;">
+      <input type="text" id="csvName" placeholder="Output file name (e.g. result.csv)" />
+      <button class="btn btn-primary" id="convertPasteBtn">Convert & Download</button>
+    </div>
+  </section>
+
+  <!-- From file -->
+  <section id="tab-file" class="card hidden">
+    <div class="row">
+      <input type="file" id="fileInput" accept=".txt,text/plain" />
+      <button class="btn btn-primary" id="convertFileBtn">Convert to CSV</button>
+    </div>
+    <p class="hint">The downloaded CSV will keep the same name as your .txt file, with a <code>.csv</code> extension.</p>
+  </section>
+
+  <div class="footer">Developed by Julien FIOT Â© 2025</div>
 </div>
 
-</body>
+<script>
+/* ---------- Tabs ---------- */
+const tabs = document.querySelectorAll('.tab-btn');
+const sections = {
+  prompts: document.getElementById('tab-prompts'),
+  paste: document.getElementById('tab-paste'),
+  file: document.getElementById('tab-file'),
+};
+tabs.forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    tabs.forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const key = btn.dataset.tab;
+    Object.values(sections).forEach(s=>s.classList.add('hidden'));
+    sections[key].classList.remove('hidden');
+  });
+});
 
+/* ---------- Conversion helpers ---------- */
+function detectDelimiter(sample) {
+  if (sample.includes('\t')) return '\t';
+  if (sample.includes(';')) return ';';
+  if (sample.includes(',')) return ',';
+  return null;
+}
+function splitLine(line, delimiter) {
+  const trimmed = line.replace(/\r?\n$/, '').trim();
+  if (!trimmed) return [];
+  if (delimiter) return trimmed.split(delimiter);
+  return trimmed.split(/\s+/);
+}
+function toCsvRow(cells) {
+  return cells.map(c=>{
+    const s = String(c ?? '');
+    if (/[",\n]/.test(s)) return '"' + s.replace(/"/g,'""') + '"';
+    return s;
+  }).join(',');
+}
+function txtToCsv(text) {
+  const lines = text.split(/\r?\n/);
+  const sample = lines.slice(0,5).join('\n');
+  const delim = detectDelimiter(sample);
+  const out = [];
+  for (const raw of lines) {
+    if (!raw.trim()) { out.push(''); continue; }
+    out.push(toCsvRow(splitLine(raw, delim)));
+  }
+  return out.join('\n');
+}
+function downloadCsv(csvText, filename) {
+  const blob = new Blob([csvText], { type: 'text/csv;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename || 'output.csv';
+  document.body.appendChild(a);
+  a.click();
+  URL.revokeObjectURL(url);
+  a.remove();
+}
+
+/* ---------- Prompts (copy + optional auto-load) ---------- */
+const prompt1 = document.getElementById('prompt1');
+const prompt2 = document.getElementById('prompt2');
+document.getElementById('copy1').addEventListener('click', async ()=>{
+  try { await navigator.clipboard.writeText(prompt1.value); alert('Prompt 1 copied.'); }
+  catch(e){ prompt1.select(); document.execCommand('copy'); alert('Prompt 1 copied (fallback).'); }
+});
+document.getElementById('copy2').addEventListener('click', async ()=>{
+  try { await navigator.clipboard.writeText(prompt2.value); alert('Prompt 2 copied.'); }
+  catch(e){ prompt2.select(); document.execCommand('copy'); alert('Prompt 2 copied (fallback).'); }
+});
+async function tryFetchText(name, targetTextarea) {
+  try {
+    const res = await fetch(name, { cache: 'no-store' });
+    if (!res.ok) return;
+    targetTextarea.value = await res.text();
+  } catch(_) {}
+}
+tryFetchText('prompt1.txt', prompt1);
+tryFetchText('prompt2.txt', prompt2);
+
+/* ---------- File â†’ CSV ---------- */
+document.getElementById('convertFileBtn').addEventListener('click', async ()=>{
+  const fi = document.getElementById('fileInput');
+  if (!fi.files || !fi.files[0]) { alert('Please choose a .txt file.'); return; }
+  const file = fi.files[0];
+  const text = await file.text();
+  const csv = txtToCsv(text);
+  const base = file.name.replace(/\.[^.]+$/,'') || 'output';
+  downloadCsv(csv, base + '.csv');
+});
+
+/* ---------- Paste â†’ CSV ---------- */
+document.getElementById('convertPasteBtn').addEventListener('click', ()=>{
+  const text = document.getElementById('pasteArea').value || '';
+  if (!text.trim()) { alert('Please paste some text.'); return; }
+  const csv = txtToCsv(text);
+  const name = document.getElementById('csvName').value.trim() || 'output.csv';
+  downloadCsv(csv, name.endsWith('.csv') ? name : name + '.csv');
+});
+</script>
+</body>
 </html>
