@@ -3,75 +3,99 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>TXT → CSV Converter (Web)</title>
+<title>Gantt GPT</title>
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+
 <style>
-  :root { --bg:#0f172a; --panel:#111827; --muted:#94a3b8; --text:#e5e7eb; --accent:#22c55e; }
+  :root { --bg:#0f172a; --panel:#111827; --muted:#94a3b8; --text:#e5e7eb; }
   html,body { margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial; background:var(--bg); color:var(--text); }
   .container { max-width: 1000px; margin: 24px auto; padding: 0 16px; }
-  .header { display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; flex-wrap:wrap; }
-  h1 { font-size:20px; margin:0; }
+  .header { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; margin-bottom:16px; }
+  h1 { font-size:22px; margin:0; display:flex; align-items:center; gap:10px; }
+  h1 img { height:40px; width:auto; border-radius:8px; }
   .tabs { display:flex; gap:8px; margin: 16px 0; flex-wrap: wrap; }
   .tab-btn { background:#1f2937; color:#e5e7eb; border:1px solid #334155; padding:8px 12px; border-radius:10px; cursor:pointer; }
   .tab-btn.active { background:#0b1324; border-color:#475569; box-shadow: inset 0 0 0 1px #475569; }
-  .card { background:var(--panel); border:1px solid #1f2937; border-radius:14px; padding:16px; }
+  .card { background:#111827; border:1px solid #1f2937; border-radius:14px; padding:16px; }
   .grid { display:grid; gap:16px; }
   .grid-2 { grid-template-columns: 1fr 1fr; }
+  .grid-3 { grid-template-columns: repeat(3, 1fr); }
+  .req-card { background:#0b1020; border:1px solid #334155; border-radius:12px; padding:12px; text-align:center; }
+  .req-card img { max-width:100%; height:auto; border-radius:10px; border:1px solid #334155; }
   .row { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
-  input[type="file"], input[type="text"], textarea { width:100%; background:#0b1020; color:#e5e7eb; border:1px solid #334155; border-radius:10px; padding:10px; }
+  textarea, input[type="file"], input[type="text"] { width:100%; background:#0b1020; color:#e5e7eb; border:1px solid #334155; border-radius:10px; padding:10px; }
   textarea { min-height: 260px; resize: vertical; line-height:1.4; }
   .btn { background:#0b1324; color:#e5e7eb; border:1px solid #334155; padding:10px 14px; border-radius:10px; cursor:pointer; }
   .btn:hover { border-color:#64748b; }
   .btn-primary { border-color:#15803d; color:#d1fae5; }
   .btn-primary:hover { box-shadow: 0 0 0 2px rgba(34,197,94,.2) inset; }
-  .hint { color:var(--muted); font-size: 12px; }
+  .link-pill { padding:8px 12px; border:1px solid #334155; border-radius:999px; text-decoration:none; color:#dbeafe; background:#0b1324; }
+  .link-pill:hover { border-color:#64748b; }
   .footer { margin-top:16px; text-align:center; color:#9ca3af; font-size:12px; }
   .hidden { display:none; }
-  .badge { font-size:11px; color:#a5b4fc; }
+  @media (max-width:880px){ .grid-3{grid-template-columns:1fr;} }
 </style>
 </head>
 <body>
 <div class="container">
   <div class="header">
-    <div style="display:flex; align-items:center; gap:10px;">
-    <img src="logo.png" alt="Logo" style="height:48px; width:auto; border-radius:8px;" />
-    <h1>TXT → CSV Converter (Web)</h1>
-	</div>
-	<span class="badge">Runs entirely in your browser • Privacy-friendly</span>
+    <h1><img src="logo1.png" alt="Logo"/>Gantt GPT</h1>
+    <span style="font-size:11px;color:#a5b4fc;">Runs entirely in your browser • Privacy-friendly</span>
   </div>
 
+  <!-- Tabs -->
   <div class="tabs">
-    <button class="tab-btn active" data-tab="prompts">Prompts</button>
+    <button class="tab-btn active" data-tab="requirements">Requirements</button>
+    <button class="tab-btn" data-tab="prompts">Prompts</button>
     <button class="tab-btn" data-tab="paste">Paste text</button>
     <button class="tab-btn" data-tab="file">From a .txt file</button>
   </div>
 
-  <!-- Prompts -->
-  <section id="tab-prompts" class="card">
-    <div class="grid grid-2">
-      <div>
-        <label for="prompt1">Prompt 1</label>
-        <textarea id="prompt1" placeholder="(Optional) Automatically loaded from prompt1.txt if present"></textarea>
-        <div class="row" style="margin-top:8px;">
-          <button class="btn" id="copy1">Copy Prompt 1</button>
-        </div>
+  <!-- Requirements -->
+  <section id="tab-requirements" class="card">
+    <div class="grid grid-3">
+      <div class="req-card">
+        <img id="img1" src="req1.png" alt="Requirement 1"/>
+        <button class="btn" data-copy-img="img1">Copy image 1</button>
       </div>
-      <div>
-        <label for="prompt2">Prompt 2</label>
-        <textarea id="prompt2" placeholder="(Optional) Automatically loaded from prompt2.txt if present"></textarea>
-        <div class="row" style="margin-top:8px;">
-          <button class="btn" id="copy2">Copy Prompt 2</button>
-        </div>
+      <div class="req-card">
+        <img id="img2" src="req2.png" alt="Requirement 2"/>
+        <button class="btn" data-copy-img="img2">Copy image 2</button>
+      </div>
+      <div class="req-card">
+        <img id="img3" src="req3.png" alt="Requirement 3"/>
+        <button class="btn" data-copy-img="img3">Copy image 3</button>
       </div>
     </div>
-    <p class="hint" style="margin-top:10px;">
-      Tip: place <code>prompt1.txt</code> and <code>prompt2.txt</code> next to this HTML file to load them automatically.
-    </p>
+    <div class="row" style="margin-top:16px;">
+      <a class="link-pill" href="https://claude.ai/new" target="_blank" rel="noopener">Open Claude</a>
+      <a class="link-pill" href="https://www.ganttproject.biz/download/free#win" target="_blank" rel="noopener">Download GanttProject (Windows)</a>
+    </div>
   </section>
 
-  <!-- Paste text -->
+  <!-- Prompts -->
+  <section id="tab-prompts" class="card hidden">
+    <div class="grid grid-2">
+      <div>
+        <label>Prompt 1</label>
+        <textarea id="prompt1"></textarea>
+        <button class="btn" id="copy1">Copy Prompt 1</button>
+      </div>
+      <div>
+        <label>Prompt 2</label>
+        <textarea id="prompt2"></textarea>
+        <button class="btn" id="copy2">Copy Prompt 2</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Paste Text (with old logo) -->
   <section id="tab-paste" class="card hidden">
-    <label for="pasteArea">Paste the content of your .txt file here:</label>
-    <textarea id="pasteArea" placeholder="Paste your plain text here…"></textarea>
+    <div style="text-align:center;margin-bottom:12px;">
+      <img src="logo.png" alt="Old logo" style="height:60px;width:auto;border-radius:10px;"/>
+    </div>
+    <label>Paste the content of your .txt file here:</label>
+    <textarea id="pasteArea" placeholder="Paste your text here…"></textarea>
     <div class="row" style="margin-top:8px;">
       <input type="text" id="csvName" placeholder="Output file name (e.g. result.csv)" />
       <button class="btn btn-primary" id="convertPasteBtn">Convert & Download</button>
@@ -81,116 +105,69 @@
   <!-- From file -->
   <section id="tab-file" class="card hidden">
     <div class="row">
-      <input type="file" id="fileInput" accept=".txt,text/plain" />
+      <input type="file" id="fileInput" accept=".txt,text/plain"/>
       <button class="btn btn-primary" id="convertFileBtn">Convert to CSV</button>
     </div>
-    <p class="hint">The downloaded CSV will keep the same name as your .txt file, with a <code>.csv</code> extension.</p>
   </section>
 
   <div class="footer">Developed by Julien FIOT © 2025</div>
 </div>
 
 <script>
-/* ---------- Tabs ---------- */
-const tabs = document.querySelectorAll('.tab-btn');
-const sections = {
-  prompts: document.getElementById('tab-prompts'),
-  paste: document.getElementById('tab-paste'),
-  file: document.getElementById('tab-file'),
+/* Tabs */
+const tabs=document.querySelectorAll('.tab-btn');
+const sections={
+  requirements:document.getElementById('tab-requirements'),
+  prompts:document.getElementById('tab-prompts'),
+  paste:document.getElementById('tab-paste'),
+  file:document.getElementById('tab-file'),
 };
 tabs.forEach(btn=>{
-  btn.addEventListener('click', ()=>{
+  btn.addEventListener('click',()=>{
     tabs.forEach(b=>b.classList.remove('active'));
     btn.classList.add('active');
-    const key = btn.dataset.tab;
     Object.values(sections).forEach(s=>s.classList.add('hidden'));
-    sections[key].classList.remove('hidden');
+    sections[btn.dataset.tab].classList.remove('hidden');
   });
 });
 
-/* ---------- Conversion helpers ---------- */
-function detectDelimiter(sample) {
-  if (sample.includes('\t')) return '\t';
-  if (sample.includes(';')) return ';';
-  if (sample.includes(',')) return ',';
-  return null;
-}
-function splitLine(line, delimiter) {
-  const trimmed = line.replace(/\r?\n$/, '').trim();
-  if (!trimmed) return [];
-  if (delimiter) return trimmed.split(delimiter);
-  return trimmed.split(/\s+/);
-}
-function toCsvRow(cells) {
-  return cells.map(c=>{
-    const s = String(c ?? '');
-    if (/[",\n]/.test(s)) return '"' + s.replace(/"/g,'""') + '"';
-    return s;
-  }).join(',');
-}
-function txtToCsv(text) {
-  const lines = text.split(/\r?\n/);
-  const sample = lines.slice(0,5).join('\n');
-  const delim = detectDelimiter(sample);
-  const out = [];
-  for (const raw of lines) {
-    if (!raw.trim()) { out.push(''); continue; }
-    out.push(toCsvRow(splitLine(raw, delim)));
+/* Copy image buttons */
+async function copyImage(id){
+  const img=document.getElementById(id);
+  if(!img) return;
+  try{
+    const r=await fetch(img.src);
+    const b=await r.blob();
+    await navigator.clipboard.write([new ClipboardItem({[b.type]:b})]);
+    alert('Image copied to clipboard.');
+  }catch{
+    await navigator.clipboard.writeText(img.src);
+    alert('Copied image URL instead.');
   }
-  return out.join('\n');
 }
-function downloadCsv(csvText, filename) {
-  const blob = new Blob([csvText], { type: 'text/csv;charset=utf-8' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = filename || 'output.csv';
-  document.body.appendChild(a);
-  a.click();
-  URL.revokeObjectURL(url);
-  a.remove();
-}
+document.querySelectorAll('[data-copy-img]').forEach(b=>b.onclick=()=>copyImage(b.dataset.copyImg));
 
-/* ---------- Prompts (copy + optional auto-load) ---------- */
-const prompt1 = document.getElementById('prompt1');
-const prompt2 = document.getElementById('prompt2');
-document.getElementById('copy1').addEventListener('click', async ()=>{
-  try { await navigator.clipboard.writeText(prompt1.value); alert('Prompt 1 copied.'); }
-  catch(e){ prompt1.select(); document.execCommand('copy'); alert('Prompt 1 copied (fallback).'); }
-});
-document.getElementById('copy2').addEventListener('click', async ()=>{
-  try { await navigator.clipboard.writeText(prompt2.value); alert('Prompt 2 copied.'); }
-  catch(e){ prompt2.select(); document.execCommand('copy'); alert('Prompt 2 copied (fallback).'); }
-});
-async function tryFetchText(name, targetTextarea) {
-  try {
-    const res = await fetch(name, { cache: 'no-store' });
-    if (!res.ok) return;
-    targetTextarea.value = await res.text();
-  } catch(_) {}
-}
-tryFetchText('prompt1.txt', prompt1);
-tryFetchText('prompt2.txt', prompt2);
+/* Prompts */
+const p1=document.getElementById('prompt1'),p2=document.getElementById('prompt2');
+async function loadPrompt(f,t){try{const r=await fetch(f);if(r.ok)t.value=await r.text();}catch{}}
+loadPrompt('prompt1.txt',p1);loadPrompt('prompt2.txt',p2);
+document.getElementById('copy1').onclick=()=>navigator.clipboard.writeText(p1.value).then(()=>alert('Prompt 1 copied.'));
+document.getElementById('copy2').onclick=()=>navigator.clipboard.writeText(p2.value).then(()=>alert('Prompt 2 copied.'));
 
-/* ---------- File → CSV ---------- */
-document.getElementById('convertFileBtn').addEventListener('click', async ()=>{
-  const fi = document.getElementById('fileInput');
-  if (!fi.files || !fi.files[0]) { alert('Please choose a .txt file.'); return; }
-  const file = fi.files[0];
-  const text = await file.text();
-  const csv = txtToCsv(text);
-  const base = file.name.replace(/\.[^.]+$/,'') || 'output';
-  downloadCsv(csv, base + '.csv');
-});
-
-/* ---------- Paste → CSV ---------- */
-document.getElementById('convertPasteBtn').addEventListener('click', ()=>{
-  const text = document.getElementById('pasteArea').value || '';
-  if (!text.trim()) { alert('Please paste some text.'); return; }
-  const csv = txtToCsv(text);
-  const name = document.getElementById('csvName').value.trim() || 'output.csv';
-  downloadCsv(csv, name.endsWith('.csv') ? name : name + '.csv');
-});
+/* TXT → CSV */
+function detectDelim(s){return s.includes('\t')?'\t':s.includes(';')?';':s.includes(',')?',':null;}
+function splitL(l,d){const t=l.trim();return!t?[]:(d?t.split(d):t.split(/\s+/));}
+function csvRow(c){return c.map(x=>/[",\n]/.test(x)?`"${x.replace(/"/g,'""')}"`:x).join(',');}
+function toCsv(t){const L=t.split(/\r?\n/);const d=detectDelim(L.slice(0,5).join('\n'));return L.map(l=>l.trim()?csvRow(splitL(l,d)):'').join('\n');}
+function dlCsv(txt,name){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([txt],{type:'text/csv'}));a.download=name;document.body.append(a);a.click();a.remove();}
+document.getElementById('convertPasteBtn').onclick=()=>{
+  const t=document.getElementById('pasteArea').value;if(!t.trim())return alert('Paste text first.');
+  dlCsv(toCsv(t),(document.getElementById('csvName').value.trim()||'output')+'.csv');
+};
+document.getElementById('convertFileBtn').onclick=async()=>{
+  const f=document.getElementById('fileInput').files[0];if(!f)return alert('Select a file.');
+  dlCsv(toCsv(await f.text()),f.name.replace(/\.[^.]+$/,'')+'.csv');
+};
 </script>
 </body>
 </html>
