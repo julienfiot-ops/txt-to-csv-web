@@ -147,17 +147,40 @@ tabs.forEach(btn=>{
 });
 
 /* Copy image buttons */
-async function copyImage(id){
-  const img=document.getElementById(id);
-  if(!img) return;
-  try{
-    const r=await fetch(img.src);
-    const b=await r.blob();
-    await navigator.clipboard.write([new ClipboardItem({[b.type]:b})]);
-    alert('Image copied to clipboard.');
-  }catch{
-    await navigator.clipboard.writeText(img.src);
-    alert('Copied image URL instead.');
+async function copyImage(id) {
+  const img = document.getElementById(id);
+  if (!img) return alert('Image not found.');
+
+  // Assure-toi que l'image est chargée pour obtenir naturalWidth/Height
+  if (!img.complete || img.naturalWidth === 0) {
+    await new Promise(res => { img.onload = res; img.onerror = res; });
+  }
+
+  try {
+    // 1) Canvas aux dimensions NATIVE de l'image (pas celles affichées)
+    const w = img.naturalWidth;
+    const h = img.naturalHeight;
+    const canvas = document.createElement('canvas');
+    canvas.width = w;
+    canvas.height = h;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(img, 0, 0, w, h);
+
+    // 2) Re-encodage en PNG (évite les métadonnées DPI ambiguës)
+    const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+
+    // 3) Copie du bitmap (nécessite HTTPS, ex. GitHub Pages)
+    await navigator.clipboard.write([ new ClipboardItem({ 'image/png': blob }) ]);
+
+    alert(`Image copied at native size: ${w}×${h}px`);
+  } catch (e) {
+    // Fallback : copie l’URL si la copie du bitmap est bloquée
+    try {
+      await navigator.clipboard.writeText(img.src);
+      alert('Could not copy the bitmap; copied the image URL instead.');
+    } catch {
+      alert('Copy failed (clipboard blocked by browser).');
+    }
   }
 }
 document.querySelectorAll('[data-copy-img]').forEach(b=>b.onclick=()=>copyImage(b.dataset.copyImg));
