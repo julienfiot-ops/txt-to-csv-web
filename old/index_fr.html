@@ -34,49 +34,21 @@
   .footer { margin-top:16px; text-align:center; color:#9ca3af; font-size:12px; }
   .hidden { display:none; }
   @media (max-width:880px){ .grid-3{grid-template-columns:1fr;} }
+  /* ===== Global CSS: High-quality images and responsive layout ===== */
+img {
+  max-width: 100%;
+  height: auto;
+  image-rendering: -webkit-optimize-contrast; /* keep sharp edges */
+  image-rendering: crisp-edges; /* backup for Firefox/Edge */
+  -ms-interpolation-mode: nearest-neighbor; /* for old IE */
+}
 
-  /* Global high-quality image rendering */
-  img {
-    max-width: 100%;
-    height: auto;
-    image-rendering: -webkit-optimize-contrast;
-    image-rendering: crisp-edges;
-    -ms-interpolation-mode: nearest-neighbor;
-  }
-  body, button, input, textarea {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
+/* Optional: smoother buttons & text */
+body, button, input, textarea {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
-  /* Modal styles */
-  .modal {
-    position: fixed; inset: 0;
-    background: rgba(0,0,0,.65);
-    display: none; align-items: center; justify-content: center;
-    padding: 24px;
-    z-index: 1000;
-  }
-  .modal.open { display: flex; }
-  .modal-card {
-    background: #0b1020;
-    border: 1px solid #334155;
-    border-radius: 14px;
-    max-width: 95vw; max-height: 90vh;
-    padding: 12px;
-    box-shadow: 0 10px 40px rgba(0,0,0,.5);
-  }
-  .modal-header {
-    display:flex; justify-content:space-between; align-items:center; gap:12px;
-    margin-bottom: 8px;
-  }
-  .modal-title { font-weight:600; }
-  .modal-close {
-    background: transparent; border: 1px solid #334155; color:#e5e7eb;
-    padding: 6px 10px; border-radius: 8px; cursor: pointer;
-  }
-  .modal-content {
-    overflow:auto; max-height: calc(90vh - 56px);
-  }
 </style>
 </head>
 <body>
@@ -91,33 +63,29 @@
     <button class="tab-btn active" data-tab="requirements">Requirements</button>
     <button class="tab-btn" data-tab="prompts">Prompts</button>
     <button class="tab-btn" data-tab="paste">Paste text</button>
+    <button class="tab-btn" data-tab="file">From a .txt file</button>
   </div>
 
   <!-- Requirements -->
   <section id="tab-requirements" class="card">
     <div class="grid grid-3">
       <div class="req-card">
-        <img id="img1" src="req1.png" alt="Requirement 1" />
+        <img id="img1" src="req1.png" alt="Requirement 1" style="max-width:100%; height:auto; image-rendering:-webkit-optimize-contrast;" />
         <button class="btn" data-copy-img="img1">Copy image 1</button>
       </div>
       <div class="req-card">
-        <img id="img2" src="req2.png" alt="Requirement 2" />
+        <img id="img2" src="req2.png" alt="Requirement 2" style="max-width:100%; height:auto; image-rendering:-webkit-optimize-contrast;" />
         <button class="btn" data-copy-img="img2">Copy image 2</button>
       </div>
       <div class="req-card">
-        <img id="img3" src="req3.png" alt="Requirement 3" />
+        <img id="img3" src="req3.png" alt="Requirement 3" style="max-width:100%; height:auto; image-rendering:-webkit-optimize-contrast;" />
         <button class="btn" data-copy-img="img3">Copy image 3</button>
       </div>
     </div>
-
     <div class="row" style="margin-top:16px;">
       <a class="link-pill" href="https://claude.ai/new" target="_blank" rel="noopener">Open Claude</a>
-      <a class="link-pill" href="https://www.ganttproject.biz/download/free#win" target="_blank" rel="noopener">Download GanttProject (Windows)</a>
-      <!-- New button to open recommended settings image -->
-      <button class="link-pill" id="open-settings">Show recommended settings</button>
+      <a class="link-pill" href="https://www.ganttproject.biz/download/free#win" target="_blank" rel="noopener">Download GanttProject</a>
     </div>
-
-
   </section>
 
   <!-- Prompts -->
@@ -136,7 +104,7 @@
     </div>
   </section>
 
-  <!-- Paste Text (old logo here only) -->
+  <!-- Paste Text (with old logo) -->
   <section id="tab-paste" class="card hidden">
     <div style="text-align:center;margin-bottom:12px;">
       <img src="logo.png" alt="Old logo" style="height:60px;width:auto;border-radius:10px;"/>
@@ -149,32 +117,28 @@
     </div>
   </section>
 
-  <div class="footer">Developed by Julien FIOT © 2025</div>
-</div>
+  <!-- From file -->
+  <section id="tab-file" class="card hidden">
+    <div class="row">
+      <input type="file" id="fileInput" accept=".txt,text/plain"/>
+      <button class="btn btn-primary" id="convertFileBtn">Convert to CSV</button>
+    </div>
+  </section>
 
-<!-- Modal (recommended settings image) -->
-<div class="modal" id="settingsModal" aria-hidden="true">
-  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
-    <div class="modal-header">
-      <div class="modal-title" id="settingsTitle">Recommended settings</div>
-      <button class="modal-close" id="closeSettings" aria-label="Close">Close</button>
-    </div>
-    <div class="modal-content">
-      <img src="settings.jpg" alt="Recommended settings" />
-    </div>
-  </div>
+  <div class="footer">Developed by Julien FIOT © 2025</div>
 </div>
 
 <script>
 /* Tabs */
-const tabs = document.querySelectorAll('.tab-btn');
-const sections = {
-  requirements: document.getElementById('tab-requirements'),
-  prompts: document.getElementById('tab-prompts'),
-  paste: document.getElementById('tab-paste'),
+const tabs=document.querySelectorAll('.tab-btn');
+const sections={
+  requirements:document.getElementById('tab-requirements'),
+  prompts:document.getElementById('tab-prompts'),
+  paste:document.getElementById('tab-paste'),
+  file:document.getElementById('tab-file'),
 };
 tabs.forEach(btn=>{
-  btn.addEventListener('click', ()=>{
+  btn.addEventListener('click',()=>{
     tabs.forEach(b=>b.classList.remove('active'));
     btn.classList.add('active');
     Object.values(sections).forEach(s=>s.classList.add('hidden'));
@@ -182,22 +146,35 @@ tabs.forEach(btn=>{
   });
 });
 
-/* Copy images at native size (canvas) */
+/* Copy image buttons */
 async function copyImage(id) {
   const img = document.getElementById(id);
   if (!img) return alert('Image not found.');
+
+  // Assure-toi que l'image est chargée pour obtenir naturalWidth/Height
   if (!img.complete || img.naturalWidth === 0) {
     await new Promise(res => { img.onload = res; img.onerror = res; });
   }
+
   try {
-    const w = img.naturalWidth, h = img.naturalHeight;
+    // 1) Canvas aux dimensions NATIVE de l'image (pas celles affichées)
+    const w = img.naturalWidth;
+    const h = img.naturalHeight;
     const canvas = document.createElement('canvas');
-    canvas.width = w; canvas.height = h;
-    canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+    canvas.width = w;
+    canvas.height = h;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(img, 0, 0, w, h);
+
+    // 2) Re-encodage en PNG (évite les métadonnées DPI ambiguës)
     const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+
+    // 3) Copie du bitmap (nécessite HTTPS, ex. GitHub Pages)
     await navigator.clipboard.write([ new ClipboardItem({ 'image/png': blob }) ]);
+
     alert(`Image copied at native size: ${w}×${h}px`);
   } catch (e) {
+    // Fallback : copie l’URL si la copie du bitmap est bloquée
     try {
       await navigator.clipboard.writeText(img.src);
       alert('Could not copy the bitmap; copied the image URL instead.');
@@ -208,48 +185,27 @@ async function copyImage(id) {
 }
 document.querySelectorAll('[data-copy-img]').forEach(b=>b.onclick=()=>copyImage(b.dataset.copyImg));
 
-/* Prompts load + copy */
-const p1=document.getElementById('prompt1'), p2=document.getElementById('prompt2');
-async function loadPrompt(f,t){ try{ const r=await fetch(f,{cache:'no-store'}); if(r.ok) t.value=await r.text(); } catch{} }
-loadPrompt('prompt1.txt', p1);
-loadPrompt('prompt2.txt', p2);
+/* Prompts */
+const p1=document.getElementById('prompt1'),p2=document.getElementById('prompt2');
+async function loadPrompt(f,t){try{const r=await fetch(f);if(r.ok)t.value=await r.text();}catch{}}
+loadPrompt('prompt1.txt',p1);loadPrompt('prompt2.txt',p2);
 document.getElementById('copy1').onclick=()=>navigator.clipboard.writeText(p1.value).then(()=>alert('Prompt 1 copied.'));
 document.getElementById('copy2').onclick=()=>navigator.clipboard.writeText(p2.value).then(()=>alert('Prompt 2 copied.'));
 
 /* TXT → CSV */
-function detectDelim(s){ return s.includes('\t')?'\t':s.includes(';')?';':s.includes(',')?',':null; }
-function splitL(l,d){ const t=l.trim(); return !t?[]:(d?t.split(d):t.split(/\s+/)); }
-function csvRow(c){ return c.map(x=>/[",\n]/.test(x)?`"${x.replace(/"/g,'""')}"`:x).join(','); }
-function toCsv(t){ const L=t.split(/\r?\n/); const d=detectDelim(L.slice(0,5).join('\n')); return L.map(l=>l.trim()?csvRow(splitL(l,d)):'').join('\n'); }
-function dlCsv(txt,name){ const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([txt],{type:'text/csv'})); a.download=name; document.body.append(a); a.click(); a.remove(); }
+function detectDelim(s){return s.includes('\t')?'\t':s.includes(';')?';':s.includes(',')?',':null;}
+function splitL(l,d){const t=l.trim();return!t?[]:(d?t.split(d):t.split(/\s+/));}
+function csvRow(c){return c.map(x=>/[",\n]/.test(x)?`"${x.replace(/"/g,'""')}"`:x).join(',');}
+function toCsv(t){const L=t.split(/\r?\n/);const d=detectDelim(L.slice(0,5).join('\n'));return L.map(l=>l.trim()?csvRow(splitL(l,d)):'').join('\n');}
+function dlCsv(txt,name){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([txt],{type:'text/csv'}));a.download=name;document.body.append(a);a.click();a.remove();}
 document.getElementById('convertPasteBtn').onclick=()=>{
-  const t=document.getElementById('pasteArea').value;
-  if(!t.trim()) return alert('Paste text first.');
-  dlCsv(toCsv(t), (document.getElementById('csvName').value.trim()||'output')+'.csv');
+  const t=document.getElementById('pasteArea').value;if(!t.trim())return alert('Paste text first.');
+  dlCsv(toCsv(t),(document.getElementById('csvName').value.trim()||'output')+'.csv');
 };
-
-/* Modal logic for recommended settings */
-const modal = document.getElementById('settingsModal');
-const openBtn = document.getElementById('open-settings');
-const closeBtn = document.getElementById('closeSettings');
-openBtn.addEventListener('click', ()=>{
-  modal.classList.add('open');
-  modal.setAttribute('aria-hidden','false');
-});
-closeBtn.addEventListener('click', ()=>{
-  modal.classList.remove('open');
-  modal.setAttribute('aria-hidden','true');
-});
-modal.addEventListener('click', (e)=>{
-  if(e.target === modal){ // click outside card closes
-    modal.classList.remove('open');
-    modal.setAttribute('aria-hidden','true');
-  }
-});
-// if image missing, show tip
-fetch('settings.jpg', {method:'HEAD'}).then(r=>{
-  if(!r.ok) document.getElementById('settings-hint').classList.remove('hidden');
-}).catch(()=> document.getElementById('settings-hint').classList.remove('hidden'));
+document.getElementById('convertFileBtn').onclick=async()=>{
+  const f=document.getElementById('fileInput').files[0];if(!f)return alert('Select a file.');
+  dlCsv(toCsv(await f.text()),f.name.replace(/\.[^.]+$/,'')+'.csv');
+};
 </script>
 </body>
 </html>
