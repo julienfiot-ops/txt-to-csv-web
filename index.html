@@ -159,7 +159,7 @@
       <button class="modal-close" id="closeSettings" aria-label="Close">Close</button>
     </div>
     <div class="modal-content">
-      <img src="settings.jpg" alt="Recommended settings" />
+      <img src="settings.png" alt="Recommended settings" />
     </div>
   </div>
 </div>
@@ -246,7 +246,7 @@ modal.addEventListener('click', (e)=>{
   }
 });
 // if image missing, show tip
-fetch('settings.jpg', {method:'HEAD'}).then(r=>{
+fetch('settings.png', {method:'HEAD'}).then(r=>{
   if(!r.ok) document.getElementById('settings-hint').classList.remove('hidden');
 }).catch(()=> document.getElementById('settings-hint').classList.remove('hidden'));
 </script>
