@@ -77,6 +77,26 @@
   .modal-content {
     overflow:auto; max-height: calc(90vh - 56px);
   }
+  .video-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding-bottom: 56.25%; /* 16:9 */
+  height: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #334155;
+  background: #020617;
+}
+.video-wrapper iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
 </style>
 </head>
 <body>
@@ -88,10 +108,12 @@
 
   <!-- Tabs -->
   <div class="tabs">
-    <button class="tab-btn active" data-tab="requirements">Requirements</button>
-    <button class="tab-btn" data-tab="prompts">Prompts</button>
-    <button class="tab-btn" data-tab="paste">Paste text</button>
-  </div>
+	<button class="tab-btn active" data-tab="requirements">Requirements</button>
+	<button class="tab-btn" data-tab="prompts">Prompts</button>
+	<button class="tab-btn" data-tab="paste">Paste text</button>
+	<button class="tab-btn" data-tab="tutorial">Tutorial</button>
+	</div>
+
 
   <!-- Requirements -->
   <section id="tab-requirements" class="card">
@@ -148,6 +170,22 @@
     </div>
   </section>
 
+  <!-- Tutorial tab -->
+  <section id="tab-tutorial" class="card hidden">
+    <h2 style="margin-top:0;margin-bottom:12px;">How to use Gantt GPT</h2>
+    
+    <div class="video-wrapper">
+      <!-- Remplace VIDEO_ID par l’ID de ta vidéo YouTube -->
+      <iframe
+        src="https://youtu.be/iqYFutuesn0"
+        title="Gantt GPT tutorial"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen
+      ></iframe>
+    </div>
+  </section>
+
+
   <div class="footer">Developed by Julien FIOT © 2025</div>
 </div>
 
@@ -171,7 +209,9 @@ const sections = {
   requirements: document.getElementById('tab-requirements'),
   prompts: document.getElementById('tab-prompts'),
   paste: document.getElementById('tab-paste'),
+  tutorial: document.getElementById('tab-tutorial'),
 };
+
 tabs.forEach(btn=>{
   btn.addEventListener('click', ()=>{
     tabs.forEach(b=>b.classList.remove('active'));
